@@ -46,11 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
         title: Text(widget.title),
       ),
-      body: Center(
-
-        child: customCard("30° Bingo de La Liga salteña", "01-01-2023", 600.0),
-      ),
-
+      body: CustomCard(name: "bingo salta capital", day: 07, month: 12, year: 2222, )
     );
   }
 }
