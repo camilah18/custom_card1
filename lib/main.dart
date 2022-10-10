@@ -46,7 +46,49 @@ class _MyHomePageState extends State<MyHomePage> {
 
         title: Text(widget.title),
       ),
-      body: CustomCard(name: "bingo salta capital", day: 07, month: 12, year: 2222, )
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: ListView(
+          children: [
+            CustomCard(
+              name: "29° Bingo de la Liga Salteña de Futbol",
+              day: 07,
+              month: 12,
+              year: 2222,
+              price: 3000,
+              imageUrl: "https://us.123rf.com/450wm/artrich/artrich2108/artrich210800032/173445168-plantilla-de-billete-de-loter%C3%ADa-bingo-o-loter%C3%ADa-fondo-para-juegos-de-azar-deportivos-vectorial-ilust.jpg?ver=6",
+            ),
+            CustomCard(
+              name: "29° Bingo de la Liga Salteña de Futbol",
+              day: 07,
+              month: 12,
+              year: 2222,
+              price: 3000,
+              ),
+            CustomCard(
+              name: "29° Bingo de la Liga Salteña de Futbol",
+              day: 07,
+              month: 12,
+              year: 2222,
+            ),
+            CustomCard(
+              name: "29° Bingo de la Liga",
+              day: 07,
+              month: 12,
+              year: 2222,
+
+            ),
+            CustomCard(
+              name: "29° Bingo de la Liga Salteña de Futbol",
+              day: 07,
+              month: 12,
+              year: 2222,
+              price: 3000,
+              imageUrl: "https://img.freepik.com/vector-gratis/numeros-tablero-bingo-colorido-historia-instagram_23-2149120357.jpg?w=2000",
+            ),
+          ],
+        ),
+      )
     );
   }
 }
