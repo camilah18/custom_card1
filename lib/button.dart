@@ -1,111 +1,78 @@
-// ignore_for_file: must_be_immutable, non_constant_identifier_names
-
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatefulWidget {
-  final String text;
-  final double height;
-  final double width;
-  final Color backgroundColor;
-  final Color textColor;
-  final Color iconColor;
+class CustomButton extends StatelessWidget {
+  String? text;
+  Color textColor;
+  IconData? iconData;
+  String? iconPath;
+  Color? iconColor;
+  Color? backgroundColor;
+  Color? borderColor;
+  Function()? onTap;
   bool isEnabled;
-  Function? onTap;
-  final IconData? icon;
-  final String? iconPath;
-  final Color borderColor;
-  final double borderWidth;
+  EdgeInsets? padding;
+  ButtonStyle? _buttonStyle;
+  TextStyle? _textStyle;
+  FontWeight fontWeight;
+  double letterSpacing;
+  double fontSize;
 
-  CustomButton({
-    super.key,
-    required this.text,
-    this.height = 60,
-    this.width = double.infinity,
-    this.backgroundColor = Colors.teal,
-    this.textColor = Colors.white,
-    this.borderColor = Colors.transparent,
-    this.borderWidth = 1,
-    this.isEnabled = true,
-    this.onTap,
-    this.icon,
-    this.iconPath,
-    this.iconColor = Colors.white,
-  });
+  CustomButton(
+      {Key? key, this.text, this.iconData, this.iconPath,this.iconColor, this.backgroundColor = Colors.blue,
+        this.borderColor, this.onTap, this.isEnabled = true, this.textColor = Colors
+          .white, this.padding = const EdgeInsets.only(top: 3.0, bottom: 3.0, left: 8.0, right: 8.0), this.fontWeight = FontWeight.normal, this.letterSpacing = 2.0, this.fontSize = 15}) : super(key: key) {
+    iconColor ??= textColor;
+    borderColor ??= backgroundColor;
+    _textStyle = TextStyle(color: textColor, fontWeight: fontWeight, letterSpacing: letterSpacing, fontSize: fontSize);
+    _buttonStyle = ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      elevation: 8,
+      side: BorderSide(color: isEnabled? borderColor!: Colors.transparent, width: 2),
+      primary: backgroundColor,
+      padding: padding,
+      minimumSize:Size.zero,
+      textStyle: _textStyle,
+    );
+  }
 
-  @override
-  State<CustomButton> createState() => _CustomButtonState();
-}
-
-class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
-    return Ink(
-      height: widget.height,
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: widget.borderWidth,
-          color: widget.borderColor,
-        ),
-        borderRadius: BorderRadius.circular(widget.height / 2),
-        color: widget.isEnabled ? widget.backgroundColor : Colors.grey,
-      ),
-      child: InkWell(
-        hoverColor: widget.isEnabled ?  widget.backgroundColor : Colors.transparent,
-        splashFactory: widget.isEnabled ? InkSplash.splashFactory : NoSplash.splashFactory,
-        borderRadius: BorderRadius.circular(widget.height / 2),
-        onTap: _onTap,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _Icon(),
-            _text(),
-          ],
-        ),
-      ),
-    );
+    return ElevatedButton(
+        onPressed: isEnabled ? onTap??=(){} : null,
+        style: _buttonStyle,
+        child: Padding(
+          padding: padding!,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _icon(),
+              _separator(),
+              _text(),
+            ],
+          ),
+        ));
   }
 
-  void _onTap(){
-    widget.isEnabled ? widget.onTap!() : null;}
+  _icon() {
+    return iconData == null
+        ? iconPath == null
+        ? const SizedBox.shrink()
+        : ImageIcon(AssetImage(iconPath!), color: iconColor, size: fontSize,)
+        : Icon(iconData, color: iconColor, size: fontSize,);
+  }
 
-  Widget _Icon() {
-    if (widget.iconPath != null) {
-      return Padding(
-        padding: const EdgeInsets.only(right: 10),
-        child: Image.asset(
-          widget.iconPath!,
-          height: 35,
-          width: 35,
-          fit: BoxFit.cover,
-          color: widget.iconColor,
-        ),
-      );
+  _separator() {
+    if ((iconPath != null || iconData != null) && text != null) {
+      return const SizedBox(width: 10,);
     }
-
-    if (widget.icon != null && widget.iconPath == null) {
-      return Padding(
-        padding: const EdgeInsets.only(right: 10),
-        child: Icon(
-          widget.icon,
-          color: widget.iconColor,
-          size: 35,
-        ),
-      );
+    else {
+      return const SizedBox.shrink();
     }
-
-    return const SizedBox.shrink();
   }
 
-  Widget _text(){
-    return Text(
-      widget.text,
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        color: widget.textColor,
-        fontSize: 25,
-        letterSpacing: 3,
-      ),
-    );
+  _text() {
+    return text != null
+        ? Text(text!, style: _textStyle)
+        : const SizedBox();
   }
-
 }
