@@ -39,9 +39,8 @@ class CustomButton extends StatefulWidget {
 class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Ink(
       height: widget.height,
-      width: widget.width,
       decoration: BoxDecoration(
         border: Border.all(
           width: widget.borderWidth,
@@ -50,20 +49,17 @@ class _CustomButtonState extends State<CustomButton> {
         borderRadius: BorderRadius.circular(widget.height / 2),
         color: widget.isEnabled ? widget.backgroundColor : Colors.grey,
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          hoverColor: widget.isEnabled ?  widget.backgroundColor : Colors.transparent,
-          splashFactory: widget.isEnabled ? InkSplash.splashFactory : NoSplash.splashFactory,
-          borderRadius: BorderRadius.circular(widget.height / 2),
-          onTap: _onTap,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _Icon(),
-              _text(),
-            ],
-          ),
+      child: InkWell(
+        hoverColor: widget.isEnabled ?  widget.backgroundColor : Colors.transparent,
+        splashFactory: widget.isEnabled ? InkSplash.splashFactory : NoSplash.splashFactory,
+        borderRadius: BorderRadius.circular(widget.height / 2),
+        onTap: _onTap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _Icon(),
+            _text(),
+          ],
         ),
       ),
     );
