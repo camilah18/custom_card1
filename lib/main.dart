@@ -30,65 +30,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  BingoModel bingo1 = BingoModel("29° Bingo de la Liga Salteña de Futbol", "07 / 12 - 2022", "", 3000);
+  BingoModel bingo2 = BingoModel("29° Bingo de la Liga Salteña de Futbol", "07 / 12 - 2022", "", 0);
+  BingoModel bingo3 = BingoModel("29° Bingo de la Liga Salteña de Futbol", "07 / 12 - 2022", "", 3000);
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-
         title: Text(widget.title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
-          children: [
-            CustomCard(
-              name: "29° Bingo de la Liga Salteña de Futbol",
-              day: 07,
-              month: 12,
-              year: 2222,
-              price: 3000,
-              imageUrl: "https://us.123rf.com/450wm/artrich/artrich2108/artrich210800032/173445168-plantilla-de-billete-de-loter%C3%ADa-bingo-o-loter%C3%ADa-fondo-para-juegos-de-azar-deportivos-vectorial-ilust.jpg?ver=6",
-            ),
-            CustomCard(
-              name: "29° Bingo de la Liga Salteña de Futbol",
-              day: 07,
-              month: 12,
-              year: 2222,
-              price: 3000,
-              ),
-            CustomCard(
-              name: "29° Bingo de la Liga Salteña de Futbol",
-              day: 07,
-              month: 12,
-              year: 2222,
-            ),
-            CustomCard(
-              name: "29° Bingo de la Liga",
-              day: 07,
-              month: 12,
-              year: 2222,
-
-            ),
-            CustomCard(
-              name: "29° Bingo de la Liga Salteña de Futbol",
-              day: 07,
-              month: 12,
-              year: 2222,
-              price: 3000,
-              imageUrl: "https://img.freepik.com/vector-gratis/numeros-tablero-bingo-colorido-historia-instagram_23-2149120357.jpg?w=2000",
-            ),
-          ],
+          children: [ CustomCard(bingo: bingo1), CustomCard(bingo: bingo2), CustomCard(bingo: bingo3)],
         ),
-      )
+      ),
     );
   }
 }
