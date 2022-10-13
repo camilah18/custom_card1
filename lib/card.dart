@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:custom_card/button.dart';
+import 'package:intl/intl.dart';
 
 class BingoModel{
+  int? _id;
   String? _name;
-  String? _date;
+  DateTime? _date;
   String? _imageUrl;
   double? _price;
   bool? _isFavorite;
-  bool? _isShared;
-  bool? _isBought;
 
-  BingoModel(String? name, String? date, String? imageUrl, double? price){
+  BingoModel(int? id, String? name, DateTime? date, String? imageUrl, double? price){
+    _id = id;
     _name = name;
     _date = date;
     _imageUrl = imageUrl;
     _price = price;
     _isFavorite = false;
-    _isShared = false;
-    _isBought = false;
+  }
+
+  int get gedId => _id!;
+  set setId (int id){
+    _id = id;
   }
 
   String get getName => _name!;
@@ -25,8 +29,8 @@ class BingoModel{
     _name = name;
   }
 
-  String get getDate => _date!;
-  set setDate (String date){
+  DateTime get getDate => _date!;
+  set setDate (DateTime date){
     _date = date;
   }
 
@@ -45,26 +49,8 @@ class BingoModel{
     _isFavorite = isFavorite;
   }
 
-  bool get getIsShared => _isShared!;
-  set setIsShared (bool isShared){
-    _isShared = isShared;
-  }
-
-  bool get getIsBought => _isBought!;
-  set setIsBought (bool isBought){
-    _isBought = isBought;
-  }
-
   void isFavorite(){
     _isFavorite = !_isFavorite!;
-  }
-
-  void hasBeenShared(){
-    _isShared = !_isShared!;
-  }
-
-  void hasBeenBought(){
-    _isBought = !_isBought!;
   }
 }
 
@@ -78,6 +64,8 @@ class CustomCard extends StatefulWidget {
 }
 
 class _CustomCardState extends State<CustomCard> {
+
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -88,8 +76,7 @@ class _CustomCardState extends State<CustomCard> {
         children: [
           _image(),
           SizedBox(
-            //color: Colors.pink,
-            height: 155,
+            height: 150,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,7 +88,8 @@ class _CustomCardState extends State<CustomCard> {
                     _buttons(),
                   ],
                 ),
-                _isButtonVisible(),
+                SizedBox(width: 280,
+                  child: _isButtonVisible(),)
               ],
             ),
           ),
@@ -130,19 +118,18 @@ class _CustomCardState extends State<CustomCard> {
   
   Widget _dataCard(){
     return Container(
-      width: 125,
+      width: 230,
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: Column(
-        //mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(widget.bingo.getName,
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
-            style: const TextStyle( fontSize: 17.0, fontWeight: FontWeight.bold, color: Colors.grey ),
+            style: const TextStyle( fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.grey ),
           ),
           const SizedBox(height: 5),
-          Text(widget.bingo.getDate,
+          Text(DateFormat("dd/MM - yyyy").format(widget.bingo.getDate),
             style: const TextStyle(
               fontSize: 17.0,
               //fontWeight: FontWeight.bold,
@@ -175,9 +162,9 @@ class _CustomCardState extends State<CustomCard> {
   Widget _buttonFavorite() {
     Widget _icon() {
       if (widget.bingo.getIsFavorite) {
-        return const Icon(Icons.star, color: Colors.amber,size: 25,);
+        return const Icon(Icons.star, color: Colors.amber,size: 30,);
       }else{
-        return const Icon(Icons.star_border, color: Colors.grey, size: 25);
+        return const Icon(Icons.star_border, color: Colors.grey, size: 30);
       }
     }
     return Material(
@@ -205,20 +192,13 @@ class _CustomCardState extends State<CustomCard> {
           onTap: null,
           borderRadius: BorderRadius.circular(32) ,
           child: const SizedBox(width: 32, height: 32,
-            child: Icon(Icons.share_outlined,color: Colors.grey,size: 21,),
+            child: Icon(Icons.share_outlined,color: Colors.grey,size: 25,),
           )
       ),
     );
   }
 
   Widget _isButtonVisible() {
-    return widget.bingo.getPrice != 0 ?
-      Padding( padding: const EdgeInsets.only(bottom:15),
-        child: CustomButton(
-          text: "Comprar",
-          backgroundColor: const Color(0xff0000b2),
-          height: 30,
-          onTap: null,),)
-        : const SizedBox.shrink();
+    return widget.bingo.getPrice != 0 ? CustomButton(text: "Comprar",) : const SizedBox.shrink();
   }
 }

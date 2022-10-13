@@ -31,9 +31,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  BingoModel bingo1 = BingoModel("29° Bingo de la Liga Salteña de Futbol", "07 / 12 - 2022", "", 3000);
-  BingoModel bingo2 = BingoModel("29° Bingo de la Liga Salteña de Futbol", "07 / 12 - 2022", "", 0);
-  BingoModel bingo3 = BingoModel("29° Bingo de la Liga Salteña de Futbol", "07 / 12 - 2022", "", 3000);
+  BingoModel bingo1 = BingoModel(1, "29° Bingo de la Liga Salteña de Futbol", DateTime(2022, 12, 7), "", 3000);
+  BingoModel bingo2 = BingoModel(2, "29° Bingo de la Liga Salteña de Futbol", DateTime(2022, 12, 7), "", 0);
+  BingoModel bingo3 = BingoModel(3, "29° Bingo de la Liga Salteña de Futbol", DateTime(2022, 12, 7), "", 3000);
 
   @override
   Widget build(BuildContext context) {
