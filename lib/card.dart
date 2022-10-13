@@ -1,143 +1,180 @@
 import 'package:flutter/material.dart';
+import 'package:custom_card/button.dart';
 
-import 'button.dart';
+class BingoModel{
+  String? _name;
+  String? _date;
+  String? _imageUrl;
+  double? _price;
+  bool? _isFavorite;
+  bool? _isShared;
+  bool? _isBought;
 
+  BingoModel(String? name, String? date, String? imageUrl, double? price){
+    _name = name;
+    _date = date;
+    _imageUrl = imageUrl;
+    _price = price;
+    _isFavorite = false;
+    _isShared = false;
+    _isBought = false;
+  }
+
+  String get getName => _name!;
+  set setName (String name){
+    _name = name;
+  }
+
+  String get getDate => _date!;
+  set setDate (String date){
+    _date = date;
+  }
+
+  String get getImageUrl => _imageUrl!;
+  set setImageUrl (String imageUrl){
+    _imageUrl = imageUrl;
+  }
+
+  double get getPrice => _price!;
+  set setPrice (double price){
+    _price = price;
+  }
+
+  bool get getIsFavorite => _isFavorite!;
+  set setIsFavorite (bool isFavorite){
+    _isFavorite = isFavorite;
+  }
+
+  bool get getIsShared => _isShared!;
+  set setIsShared (bool isShared){
+    _isShared = isShared;
+  }
+
+  bool get getIsBought => _isBought!;
+  set setIsBought (bool isBought){
+    _isBought = isBought;
+  }
+
+  void isFavorite(){
+    _isFavorite = !_isFavorite!;
+  }
+
+  void hasBeenShared(){
+    _isShared = !_isShared!;
+  }
+
+  void hasBeenBought(){
+    _isBought = !_isBought!;
+  }
+}
 
 class CustomCard extends StatefulWidget {
-  final String name;
-  final int day;
-  final  int month;
-  final int year;
-  final int? price;
-  final String? imagePath;
-  final String? imageUrl;
-  late bool isFavorite;
+  final BingoModel bingo;
 
-  CustomCard({
-    Key? key,
-    required this.name,
-    required this.day,
-    required this.month,
-    required this.year,
-    this.price,
-    this.imagePath,
-    this.imageUrl,
-    this.isFavorite = false,
-  }) : super(key: key);
+  const CustomCard({Key? key, required this.bingo}) : super(key: key);
 
   @override
   State<CustomCard> createState() => _CustomCardState();
 }
 
 class _CustomCardState extends State<CustomCard> {
-
-  String _dateFormat(){
-    return "${widget.day}/${widget.month} - ${widget.year}";
-  }
-
-  void isFavorite()
-  {
-    setState(() {
-      widget.isFavorite = !widget.isFavorite;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return _card(300);
-  }
-
-  Widget _card(double width){
-    return Material(
-      elevation: 10,
-      color: Colors.transparent,
-      child: Container(
-          width: width,
-          height: width*0.55,
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
-              ]),
-          child: Padding(
-            padding: EdgeInsets.all(width*0.025),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Container( width: width*0.40, height: width*0.40, color: Colors.transparent,
-                  child: _cardImage(width*0.35),
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      elevation: 10.0,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _image(),
+          SizedBox(
+            //color: Colors.pink,
+            height: 155,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _dataCard(),
+                    _buttons(),
+                  ],
                 ),
-                SizedBox(width: width*0.05,),
-                SizedBox(
-                    width: width*0.65, height: width*0.45,
-                    child: Column(
-                      children: [
-                        Row(children: [
-                          SizedBox(width: width*0.5, height: width*0.25,child: _dataCard(width),),
-                          SizedBox(width: width*0.05,),
-                          SizedBox(width: width*0.1, height: width*0.25, child: _buttons(width),)
-                        ],),
-                        SizedBox(height: width*0.05,),
-                        SizedBox(width: width*0.65, height: width*0.15, child: _isButtonVisible(width)),
-                      ],
-                    )
-                ),
+                _isButtonVisible(),
               ],
             ),
-          )
+          ),
+        ],
       ),
     );
   }
 
-  Widget _cardImage(double width){
+  Widget _image(){
     _childImage(){
-      if (widget.imagePath != null){
-        return Image.asset(widget.imagePath!, fit: BoxFit.fill);
-      } else if(widget.imageUrl != null){
-        return Image.network(widget.imageUrl!, fit: BoxFit.fill,);
-      } else{
-        return Icon(Icons.image_not_supported_outlined, size: width*0.5);
+      if(widget.bingo.getImageUrl != ''){
+        return Image.network(widget.bingo.getImageUrl, width: 125, height: 125, fit: BoxFit.fill);
+      } else {
+        return const SizedBox(width: 125, height: 125, child: Icon(Icons.image_not_supported_outlined, size: 50,),);
       }
     }
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child: _childImage(),);
-  }
 
-  Widget _dataCard(double width) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(widget.name,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
-          style: TextStyle(fontSize: width * 0.045,
-              fontWeight: FontWeight.bold,
-              color: Colors.black),),
-        Text(_dateFormat(),
-          style: TextStyle(fontSize: width * 0.045, color: Colors.black),),
-        const SizedBox(height: 5,),
-        Text(widget.price != null ? '\u0024${widget.price}' : "",
-            style: TextStyle(fontSize: width*0.05, fontWeight: FontWeight.bold,color: Colors.black)),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: _childImage()
+      )
+    );
+  }
+  
+  Widget _dataCard(){
+    return Container(
+      width: 125,
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: Column(
+        //mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(widget.bingo.getName,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            style: const TextStyle( fontSize: 17.0, fontWeight: FontWeight.bold, color: Colors.grey ),
+          ),
+          const SizedBox(height: 5),
+          Text(widget.bingo.getDate,
+            style: const TextStyle(
+              fontSize: 17.0,
+              //fontWeight: FontWeight.bold,
+              color: Colors.grey
+            ),
+            textAlign: TextAlign.left,),
+          //const SizedBox(height: 35.0,),
+          const SizedBox(height: 5),
+          Text(widget.bingo.getPrice != 0 ? '\u0024${widget.bingo.getPrice}' : " ",
+            style: const TextStyle(color: Color(0xff0000b2), fontSize: 17.0, fontWeight: FontWeight.bold,),),
+        ],
+      ),
     );
   }
 
-  Widget _buttons(double width){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _buttonFavorite(),
-        SizedBox(height: width*0.02,),
-        _buttonShare(),
-      ],
+  Widget _buttons(){
+    return Padding(
+      padding: const EdgeInsets.only(top:16,right: 15,left: 9),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _buttonFavorite(),
+          const SizedBox(height: 10,),
+          _buttonShare(),
+        ],
+      ),
     );
   }
-
+  
   Widget _buttonFavorite() {
     Widget _icon() {
-      if (widget.isFavorite) {
+      if (widget.bingo.getIsFavorite) {
         return const Icon(Icons.star, color: Colors.amber,size: 25,);
       }else{
         return const Icon(Icons.star_border, color: Colors.grey, size: 25);
@@ -147,20 +184,15 @@ class _CustomCardState extends State<CustomCard> {
       elevation: 3,
       borderRadius: BorderRadius.circular(32),
       child: InkWell(
-          onTap: (){
-            isFavorite();
-            if(widget.isFavorite){
-              print("Añadido ${widget.name} a favoritos");
-            }else{
-              print("Quitado ${widget.name} de favoritos");
-            }
-          },
           borderRadius:BorderRadius.circular(32) ,
-          child: SizedBox(
-            width: 32,
-            height: 32,
-            child: _icon(),
-          )
+          onTap: (){
+            setState(() { widget.bingo.isFavorite(); }); },
+        child:SizedBox(
+          //padding: EdgeInsets.all(1),
+          width: 32,
+          height: 32,
+          child: _icon(),
+        )
       ),
     );
   }
@@ -170,29 +202,23 @@ class _CustomCardState extends State<CustomCard> {
       elevation: 3,
       borderRadius:BorderRadius.circular(32) ,
       child: InkWell(
-          onTap: (){
-            print("Compartir ${widget.name}");
-          },
-          borderRadius:BorderRadius.circular(32) ,
-          child: const SizedBox(
-            width: 32,
-            height: 32,
+          onTap: null,
+          borderRadius: BorderRadius.circular(32) ,
+          child: const SizedBox(width: 32, height: 32,
             child: Icon(Icons.share_outlined,color: Colors.grey,size: 21,),
           )
       ),
     );
   }
 
-  Widget _isButtonVisible(double width) {
-    return widget.price != null ? Padding(
-      padding: const EdgeInsets.only(bottom:15),
-      child:
-      CustomButton(
-        onTap: (){
-          print("Comprar ${widget.name}");
-        },
-        text: "Comprar",
-        backgroundColor: const Color(0xff0000b2), fontSize: width * 0.045,),
-    ) : const SizedBox.shrink();
+  Widget _isButtonVisible() {
+    return widget.bingo.getPrice != 0 ?
+      Padding( padding: const EdgeInsets.only(bottom:15),
+        child: CustomButton(
+          text: "Comprar",
+          backgroundColor: const Color(0xff0000b2),
+          height: 30,
+          onTap: null,),)
+        : const SizedBox.shrink();
   }
 }

@@ -1,35 +1,51 @@
+import 'package:custom_card/card.dart';
 import 'package:flutter/material.dart';
-import 'card.dart';
-
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(backgroundColor: Colors.white,),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView(
-            padding: const EdgeInsets.all(20),
-            scrollDirection: Axis.vertical,
-            children: [
-              const Divider(),
-              CustomCard(name: "29° Bingo de la Liga Salteña de Fútbol", day: 17, month:7, year: 2022,price: 1000,
-                imageUrl: 'https://th.bing.com/th/id/R.ac355af87ab6fbb3f85304bdacf7f855?rik=Yc0SncHQgS7QJg&pid=ImgRaw&r=0',),
-              const Divider(),
-              CustomCard(name: "Bingo San José Campo de Fútbol", day: 12, month:08, year: 2022),
-              const Divider(),
-              CustomCard(name: "Bingo Remodelación Parroquial", day: 04, month:08, year: 2022,price: 1200,
-                imageUrl: 'https://th.bing.com/th/id/OIP.wA4pf72TXyqcCr6rmgqC3AHaHa?pid=ImgDet&rs=1',),
-              const Divider(),
-            ],),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  BingoModel bingo1 = BingoModel("29° Bingo de la Liga Salteña de Futbol", "07 / 12 - 2022", "", 3000);
+  BingoModel bingo2 = BingoModel("29° Bingo de la Liga Salteña de Futbol", "07 / 12 - 2022", "", 0);
+  BingoModel bingo3 = BingoModel("29° Bingo de la Liga Salteña de Futbol", "07 / 12 - 2022", "", 3000);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: ListView(
+          children: [ CustomCard(bingo: bingo1), CustomCard(bingo: bingo2), CustomCard(bingo: bingo3)],
         ),
       ),
     );
