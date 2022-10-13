@@ -56,7 +56,6 @@ class BingoModel{
 
 class CustomCard extends StatefulWidget {
   final BingoModel bingo;
-
   const CustomCard({Key? key, required this.bingo}) : super(key: key);
 
   @override
@@ -65,106 +64,117 @@ class CustomCard extends StatefulWidget {
 
 class _CustomCardState extends State<CustomCard> {
 
-
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      elevation: 10.0,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _image(),
-          SizedBox(
-            height: 150,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _dataCard(),
-                    _buttons(),
-                  ],
-                ),
-                SizedBox(width: 280,
-                  child: _isButtonVisible(),)
-              ],
+    return Material(
+      elevation: 10,
+      borderRadius: BorderRadius.circular(15),
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        width: double.infinity,
+        height: 160,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
+          children: [
+            _image(),
+            Expanded(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                              child: _dataCard()),
+                        ),
+                        _buttons(),
+                      ],
+                    ),
+                  ),
+                 SizedBox(
+                   width: double.infinity,
+                   height:30,
+                   child: _isButtonVisible(),
+                 ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _image(){
     _childImage(){
-      if(widget.bingo.getImageUrl != ''){
-        return Image.network(widget.bingo.getImageUrl, width: 125, height: 125, fit: BoxFit.fill);
+      if(widget.bingo.getImageUrl != ""){
+        return Container(
+            width: 125,
+            height: 125,
+            child: Image.network(widget.bingo.getImageUrl, fit: BoxFit.fill)
+        );
       } else {
-        return const SizedBox(width: 125, height: 125, child: Icon(Icons.image_not_supported_outlined, size: 50,),);
+        return const SizedBox(
+            width: 125,
+            height: 125,
+            child: Icon(Icons.image_not_supported_outlined, size: 50,)
+        );
       }
     }
 
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.only(right:15.0),
       child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
-          child: _childImage()
+          child: _childImage(),
       )
     );
   }
   
   Widget _dataCard(){
-    return Container(
-      width: 230,
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(widget.bingo.getName,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            style: const TextStyle( fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.grey ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(widget.bingo.getName,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          style: const TextStyle( fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.grey ),
+        ),
+        const SizedBox(height: 5),
+        Text(DateFormat("dd/MM - yyyy").format(widget.bingo.getDate),
+          style: const TextStyle(
+            fontSize: 18.0,
+            //fontWeight: FontWeight.bold,
+            color: Colors.grey
           ),
-          const SizedBox(height: 5),
-          Text(DateFormat("dd/MM - yyyy").format(widget.bingo.getDate),
-            style: const TextStyle(
-              fontSize: 17.0,
-              //fontWeight: FontWeight.bold,
-              color: Colors.grey
-            ),
-            textAlign: TextAlign.left,),
-          //const SizedBox(height: 35.0,),
-          const SizedBox(height: 5),
-          Text(widget.bingo.getPrice != 0 ? '\u0024${widget.bingo.getPrice}' : " ",
-            style: const TextStyle(color: Color(0xff0000b2), fontSize: 17.0, fontWeight: FontWeight.bold,),),
-        ],
-      ),
+          textAlign: TextAlign.left,),
+        //const SizedBox(height: 35.0,),
+        const SizedBox(height: 5),
+        Text(widget.bingo.getPrice != 0 ? '\u0024${widget.bingo.getPrice.round()}' : " ",
+          style: const TextStyle(color: Color(0xff0000b2), fontSize: 18, fontWeight: FontWeight.bold,),),
+      ],
     );
   }
 
   Widget _buttons(){
-    return Padding(
-      padding: const EdgeInsets.only(top:16,right: 15,left: 9),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          _buttonFavorite(),
-          const SizedBox(height: 10,),
-          _buttonShare(),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        _buttonFavorite(),
+        const SizedBox(height: 10,),
+        _buttonShare(),
+      ],
     );
   }
   
   Widget _buttonFavorite() {
     Widget _icon() {
       if (widget.bingo.getIsFavorite) {
-        return const Icon(Icons.star, color: Colors.amber,size: 30,);
+        return const Icon(Icons.star, color: Colors.amber,size: 23,);
       }else{
-        return const Icon(Icons.star_border, color: Colors.grey, size: 30);
+        return const Icon(Icons.star_border, color: Colors.grey, size: 23);
       }
     }
     return Material(
@@ -192,13 +202,16 @@ class _CustomCardState extends State<CustomCard> {
           onTap: null,
           borderRadius: BorderRadius.circular(32) ,
           child: const SizedBox(width: 32, height: 32,
-            child: Icon(Icons.share_outlined,color: Colors.grey,size: 25,),
+            child: Icon(Icons.share_outlined,color: Colors.grey,size: 23,),
           )
       ),
     );
   }
 
   Widget _isButtonVisible() {
-    return widget.bingo.getPrice != 0 ? CustomButton(text: "Comprar",) : const SizedBox.shrink();
+    return widget.bingo.getPrice != 0 ? CustomButton(
+      text: "Comprar",
+      backgroundColor: Color(0xff0000b2),
+    ): const SizedBox.shrink();
   }
 }

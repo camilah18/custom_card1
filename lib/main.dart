@@ -31,9 +31,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  BingoModel bingo1 = BingoModel(1, "29° Bingo de la Liga Salteña de Futbol", DateTime(2022, 12, 7), "", 3000);
+  BingoModel bingo1 = BingoModel(1, "29° Bingo de la Liga Salteña de Futbol", DateTime(2022, 12, 7), "https://i0.wp.com/infosal.es/wp-content/uploads/2020/03/BINGO.jpg?fit=2000%2C2000&ssl=1",5000);
   BingoModel bingo2 = BingoModel(2, "29° Bingo de la Liga Salteña de Futbol", DateTime(2022, 12, 7), "", 0);
-  BingoModel bingo3 = BingoModel(3, "29° Bingo de la Liga Salteña de Futbol", DateTime(2022, 12, 7), "", 3000);
+  BingoModel bingo3 = BingoModel(3, "29° Bingo de la Liga Salteña de Futbol", DateTime(2022, 12, 7), "", 5000);
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +44,14 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: ListView(
-          children: [ CustomCard(bingo: bingo1), CustomCard(bingo: bingo2), CustomCard(bingo: bingo3)],
+        child:ListView(
+          children: [
+            CustomCard(bingo: bingo1),
+            SizedBox(height:30),
+            CustomCard(bingo: bingo2),
+            SizedBox(height:30),
+            CustomCard(bingo: bingo3),
+          ],
         ),
       ),
     );
