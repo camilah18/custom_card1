@@ -10,18 +10,13 @@ class BingoModel{
   double? _price;
   bool? _isFavorite;
 
-  BingoModel(int? id, String? name, DateTime? date, String? imageUrl, double? price){
+  BingoModel(int id, String? name, DateTime? date, String? imageUrl, double? price){
     _id = id;
     _name = name;
     _date = date;
     _imageUrl = imageUrl;
     _price = price;
     _isFavorite = false;
-  }
-
-  int get gedId => _id!;
-  set setId (int id){
-    _id = id;
   }
 
   String get getName => _name!;
@@ -52,17 +47,36 @@ class BingoModel{
   void isFavorite(){
     _isFavorite = !_isFavorite!;
   }
+
+  int? getId(){
+    return _id;
+  }
 }
 
 class CustomCard extends StatefulWidget {
   final BingoModel bingo;
-  const CustomCard({Key? key, required this.bingo}) : super(key: key);
+  final Function(int?)? onTapFavorite;
+  final Function(int?)? onTapShared;
+  final Function(int?)? onTapBought;
+
+  const CustomCard({Key? key, required this.bingo, this.onTapFavorite, this.onTapShared, this.onTapBought}) : super(key: key);
 
   @override
   State<CustomCard> createState() => _CustomCardState();
 }
 
 class _CustomCardState extends State<CustomCard> {
+  int? _getIsFavorite() {
+      return widget.bingo.getId();
+  }
+
+  int? _getIsShared(){
+    return widget.bingo.getId();
+  }
+
+  int? _getIsBought(){
+    return widget.bingo.getId();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +124,7 @@ class _CustomCardState extends State<CustomCard> {
   Widget _image(){
     _childImage(){
       if(widget.bingo.getImageUrl != ""){
-        return Container(
+        return SizedBox(
             width: 125,
             height: 125,
             child: Image.network(widget.bingo.getImageUrl, fit: BoxFit.fill)
@@ -173,7 +187,7 @@ class _CustomCardState extends State<CustomCard> {
     Widget _icon() {
       if (widget.bingo.getIsFavorite) {
         return const Icon(Icons.star, color: Colors.amber,size: 23,);
-      }else{
+      } else {
         return const Icon(Icons.star_border, color: Colors.grey, size: 23);
       }
     }
@@ -183,9 +197,11 @@ class _CustomCardState extends State<CustomCard> {
       child: InkWell(
           borderRadius:BorderRadius.circular(32) ,
           onTap: (){
-            setState(() { widget.bingo.isFavorite(); }); },
+            setState(() {
+              widget.bingo.isFavorite();
+              if (widget.bingo.getIsFavorite){ widget.onTapFavorite!(_getIsFavorite()); }
+            });},
         child:SizedBox(
-          //padding: EdgeInsets.all(1),
           width: 32,
           height: 32,
           child: _icon(),
@@ -199,10 +215,13 @@ class _CustomCardState extends State<CustomCard> {
       elevation: 3,
       borderRadius:BorderRadius.circular(32) ,
       child: InkWell(
-          onTap: null,
+          onTap: (){
+            setState(() {
+              widget.onTapShared!(_getIsShared());
+            });},
           borderRadius: BorderRadius.circular(32) ,
           child: const SizedBox(width: 32, height: 32,
-            child: Icon(Icons.share_outlined,color: Colors.grey,size: 23,),
+            child: Icon(Icons.share_outlined, color: Colors.grey, size: 23,),
           )
       ),
     );
@@ -211,7 +230,10 @@ class _CustomCardState extends State<CustomCard> {
   Widget _isButtonVisible() {
     return widget.bingo.getPrice != 0 ? CustomButton(
       text: "Comprar",
-      backgroundColor: Color(0xff0000b2),
+      backgroundColor: const Color(0xff0000b2),
+      onTap: () { setState(() {
+        widget.onTapBought!(_getIsBought());
+      });},
     ): const SizedBox.shrink();
   }
 }
