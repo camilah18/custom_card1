@@ -19,33 +19,33 @@ class BingoModel{
     _isFavorite = false;
   }
 
-  int get gedId => _id!;
-  set setId (int id){
+  int gedId() => _id!;
+  setId (int id){
     _id = id;
   }
 
-  String get getName => _name!;
-  set setName (String name){
+  String getName() => _name!;
+  setName (String name){
     _name = name;
   }
 
-  DateTime get getDate => _date!;
-  set setDate (DateTime date){
+  DateTime getDate() => _date!;
+  setDate (DateTime date){
     _date = date;
   }
 
-  String get getImageUrl => _imageUrl!;
-  set setImageUrl (String imageUrl){
+  String getImageUrl() => _imageUrl!;
+  setImageUrl (String imageUrl){
     _imageUrl = imageUrl;
   }
 
-  double get getPrice => _price!;
-  set setPrice (double price){
+  double getPrice() => _price!;
+  setPrice (double price){
     _price = price;
   }
 
-  bool get getIsFavorite => _isFavorite!;
-  set setIsFavorite (bool isFavorite){
+  bool getIsFavorite() => _isFavorite!;
+  setIsFavorite (bool isFavorite){
     _isFavorite = isFavorite;
   }
 
@@ -56,13 +56,27 @@ class BingoModel{
 
 class CustomCard extends StatefulWidget {
   final BingoModel bingo;
-  const CustomCard({Key? key, required this.bingo}) : super(key: key);
+  final Function stateFavorite;
+  final Function shareIt;
+  final Function shoppIt;
+
+  const CustomCard({Key? key, required this.shoppIt, required this.stateFavorite, required this.shareIt ,required this.bingo}) : super(key: key);
+
+  getModel(){
+    return bingo;
+  }
 
   @override
   State<CustomCard> createState() => _CustomCardState();
 }
 
 class _CustomCardState extends State<CustomCard> {
+
+  isFavorite() {
+    setState(() {
+      widget.bingo.setIsFavorite(!(widget.bingo.getIsFavorite()));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,11 +123,11 @@ class _CustomCardState extends State<CustomCard> {
 
   Widget _image(){
     _childImage(){
-      if(widget.bingo.getImageUrl != ""){
-        return Container(
+      if(widget.bingo.getImageUrl() != ""){
+        return SizedBox(
             width: 125,
             height: 125,
-            child: Image.network(widget.bingo.getImageUrl, fit: BoxFit.fill)
+            child: Image.network(widget.bingo.getImageUrl(), fit: BoxFit.fill)
         );
       } else {
         return const SizedBox(
@@ -123,7 +137,6 @@ class _CustomCardState extends State<CustomCard> {
         );
       }
     }
-
     return Padding(
       padding: const EdgeInsets.only(right:15.0),
       child: ClipRRect(
@@ -137,13 +150,13 @@ class _CustomCardState extends State<CustomCard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(widget.bingo.getName,
+        Text(widget.bingo.getName(),
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
           style: const TextStyle( fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.grey ),
         ),
         const SizedBox(height: 5),
-        Text(DateFormat("dd/MM - yyyy").format(widget.bingo.getDate),
+        Text(DateFormat("dd/MM - yyyy").format(widget.bingo.getDate()),
           style: const TextStyle(
             fontSize: 18.0,
             //fontWeight: FontWeight.bold,
@@ -152,7 +165,7 @@ class _CustomCardState extends State<CustomCard> {
           textAlign: TextAlign.left,),
         //const SizedBox(height: 35.0,),
         const SizedBox(height: 5),
-        Text(widget.bingo.getPrice != 0 ? '\u0024${widget.bingo.getPrice.round()}' : " ",
+        Text(widget.bingo.getPrice() != 0 ? '\u0024${widget.bingo.getPrice().round()}' : " ",
           style: const TextStyle(color: Color(0xff0000b2), fontSize: 18, fontWeight: FontWeight.bold,),),
       ],
     );
@@ -171,7 +184,7 @@ class _CustomCardState extends State<CustomCard> {
   
   Widget _buttonFavorite() {
     Widget _icon() {
-      if (widget.bingo.getIsFavorite) {
+      if (widget.bingo.getIsFavorite()) {
         return const Icon(Icons.star, color: Colors.amber,size: 23,);
       }else{
         return const Icon(Icons.star_border, color: Colors.grey, size: 23);
@@ -182,9 +195,11 @@ class _CustomCardState extends State<CustomCard> {
       borderRadius: BorderRadius.circular(32),
       child: InkWell(
           borderRadius:BorderRadius.circular(32) ,
-          onTap: (){
-            setState(() { widget.bingo.isFavorite(); }); },
-        child:SizedBox(
+          onTap:(){
+            isFavorite();
+            widget.stateFavorite(widget.bingo);
+          },
+          child:SizedBox(
           //padding: EdgeInsets.all(1),
           width: 32,
           height: 32,
@@ -199,7 +214,9 @@ class _CustomCardState extends State<CustomCard> {
       elevation: 3,
       borderRadius:BorderRadius.circular(32) ,
       child: InkWell(
-          onTap: null,
+          onTap: (){
+            widget.shareIt(widget.bingo);
+          },
           borderRadius: BorderRadius.circular(32) ,
           child: const SizedBox(width: 32, height: 32,
             child: Icon(Icons.share_outlined,color: Colors.grey,size: 23,),
@@ -209,9 +226,12 @@ class _CustomCardState extends State<CustomCard> {
   }
 
   Widget _isButtonVisible() {
-    return widget.bingo.getPrice != 0 ? CustomButton(
+    return widget.bingo.getPrice() != 0 ? CustomButton(
+      onTap: (){
+        widget.shoppIt(widget.bingo);
+      },
       text: "Comprar",
-      backgroundColor: Color(0xff0000b2),
+      backgroundColor: const Color(0xff0000b2),
     ): const SizedBox.shrink();
   }
 }
