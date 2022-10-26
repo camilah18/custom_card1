@@ -1,4 +1,4 @@
-import 'package:custom_card/card.dart';
+import 'package:custom_card/custom_card.dart';
 import 'package:flutter/material.dart';
 
 void main() {

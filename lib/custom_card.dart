@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:custom_card/button.dart';
 import 'package:intl/intl.dart';
 
+
 class BingoModel{
   int? _id;
   String? _name;
@@ -9,6 +10,14 @@ class BingoModel{
   String? _imageUrl;
   double? _price;
   bool? _isFavorite;
+
+  /// ---- INFO ----
+  ///
+  /// Grupo: Integrantes del grupo: Apaza, Celina ; Herrera, Camila ; Marín Sofía;
+  /// Con este widget se puede mostrar la información de un bingo en una card personalizada;
+  /// La card cuenta con un botón para añadir a favoritos y otro para compartir;
+  /// El título y la fecha son datos requeridos;
+  /// Además, cuenta con la posibilidad de mostrar un botón para comprar si es que se le añade un precio.
 
   BingoModel(int? id, String? name, DateTime? date, String? imageUrl, double? price){
     _id = id;
@@ -122,7 +131,7 @@ class _CustomCardState extends State<CustomCard> {
   }
 
   Widget _image(){
-    _childImage(){
+    childImage(){
       if(widget.bingo.getImageUrl() != ""){
         return SizedBox(
             width: 125,
@@ -141,7 +150,7 @@ class _CustomCardState extends State<CustomCard> {
       padding: const EdgeInsets.only(right:15.0),
       child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
-          child: _childImage(),
+          child: childImage(),
       )
     );
   }
@@ -183,7 +192,7 @@ class _CustomCardState extends State<CustomCard> {
   }
   
   Widget _buttonFavorite() {
-    Widget _icon() {
+    Widget icon() {
       if (widget.bingo.getIsFavorite()) {
         return const Icon(Icons.star, color: Colors.amber,size: 23,);
       }else{
@@ -203,7 +212,7 @@ class _CustomCardState extends State<CustomCard> {
           //padding: EdgeInsets.all(1),
           width: 32,
           height: 32,
-          child: _icon(),
+          child: icon(),
         )
       ),
     );
