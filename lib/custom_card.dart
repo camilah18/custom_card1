@@ -11,14 +11,6 @@ class BingoModel{
   double? _price;
   bool? _isFavorite;
 
-  /// ---- INFO ----
-  ///
-  /// Grupo: Integrantes del grupo: Apaza, Celina ; Herrera, Camila ; Marín Sofía;
-  /// Con este widget se puede mostrar la información de un bingo en una card personalizada;
-  /// La card cuenta con un botón para añadir a favoritos y otro para compartir;
-  /// El título y la fecha son datos requeridos;
-  /// Además, cuenta con la posibilidad de mostrar un botón para comprar si es que se le añade un precio.
-
   BingoModel(int? id, String? name, DateTime? date, String? imageUrl, double? price){
     _id = id;
     _name = name;
@@ -68,6 +60,16 @@ class CustomCard extends StatefulWidget {
   final Function stateFavorite;
   final Function shareIt;
   final Function shoppIt;
+
+  /// ---- INFO ----
+  ///
+  /// Grupo: Apaza, Celina ; Herrera, Camila ; Marín Sofía.
+  ///
+  /// Con este widget se puede mostrar la información de un bingo en una card personalizada.
+  /// La card cuenta con un botón para añadir a favoritos y otro para compartir.
+  /// El título y la fecha son datos requeridos.
+  ///
+  /// Además, cuenta con la posibilidad de mostrar un botón para comprar si es que se le añade un precio.
 
   const CustomCard({Key? key, required this.shoppIt, required this.stateFavorite, required this.shareIt ,required this.bingo}) : super(key: key);
 
